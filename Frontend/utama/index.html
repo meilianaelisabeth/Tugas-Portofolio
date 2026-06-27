@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elisabeth | Portofolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.4/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='utama/css/style.css') }}">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container py-3">
+        <a class="navbar-brand fw-bold" href="#">Elisabeth</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="#mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="#skills">Skills</a></li>
+                <li class="nav-item"><a class="nav-link" href="#experience">Experience</a></li>
+                <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold" href="{{ url_for('login.admin_login') }}">Admin</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <section id="home" class="container hero">
+        <div class="row align-items-center gy-5">
+            <div class="col-lg-6">
+                <div class="mb-4 text-uppercase text-primary fw-bold small">Selamat Datang di Portofolio Saya</div>
+                <h1 class="hero-title">Halo, Saya <span class="text-primary">Elisabeth Meiliana Babai</span></h1>
+                <p class="lead text-muted">{{ profil['deskripsi'] if profil else 'Lengkapi data profil Anda di halaman admin untuk menampilkan deskripsi profesional yang sesuai.' }}</p>
+                <div class="d-flex flex-wrap gap-3 mt-4">
+                    <a class="btn btn-primary btn-lg" href="#projects">Lihat Proyek Saya</a>
+                    <a class="btn btn-outline-primary btn-lg" href="#contact">Hubungi Saya</a>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="hero-card">
+                    <img src="{{ profil['foto_url'] if profil and profil['foto_url'] else 'https://via.placeholder.com/700x720?text=Profil' }}" alt="Foto Profil">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="container py-5">
+        <div class="section-title">
+            <h2>Tentang Saya</h2>
+            <span></span>
+        </div>
+        <div class="about-grid">
+            <div class="about-card">
+                <h3>Backend Developer & Python Enthusiast</h3>
+               <p>{{ profil['deskripsi'] if profil else '' }}</p>
+                <a href="#contact" class="btn btn-primary mt-3">Hubungi Saya</a>
+            </div>
+            <div class="about-card">
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="p-4 rounded-4" style="background: var(--primary-soft);">
+                            <div class="fs-3 text-primary mb-2"><i class="bi bi-code-slash"></i></div>
+                            <div class="fw-semibold">Coding</div>
+                            <div class="text-muted">Python, Flask, SQL</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-4 rounded-4" style="background: #f8fafc;">
+                            <div class="fs-3 text-primary mb-2"><i class="bi bi-server"></i></div>
+                            <div class="fw-semibold">Backend</div>
+                            <div class="text-muted">API & Database</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-4 rounded-4" style="background: #f8fafc;">
+                            <div class="fs-3 text-primary mb-2"><i class="bi bi-terminal"></i></div>
+                            <div class="fw-semibold">Deploy</div>
+                            <div class="text-muted">64-bit hosting</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-4 rounded-4" style="background: var(--primary-soft);">
+                            <div class="fs-3 text-primary mb-2"><i class="bi bi-people"></i></div>
+                            <div class="fw-semibold">Kolaborasi</div>
+                            <div class="text-muted">Agile & teamwork</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="container py-5">
+        <div class="section-title">
+            <h2>Keahlian</h2>
+            <span></span>
+        </div>
+        <div class="skills-grid">
+            {% for skill in skills %}
+            <article class="skill-card">
+                <div class="skill-icon"><i class="bi bi-lightning-charge-fill"></i></div>
+                <h5>{{ skill['nama_skill'] }}</h5>
+                <p class="text-muted">{{ skill['tingkat_keahlian'] }}</p>
+            </article>
+            {% else %}
+            <div class="alert alert-secondary">Belum ada skill yang ditambahkan.</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="experience" class="container py-5">
+        <div class="section-title">
+            <h2>Pengalaman</h2>
+            <span></span>
+        </div>
+        <div class="experience-wrapper timeline">
+            {% for experience in experiences %}
+            <article class="timeline-item">
+                <div class="timeline-label"><i class="bi bi-calendar3"></i> {{ experience['tahun'] }}</div>
+                <h5>{{ experience['posisi'] }}</h5>
+                <p class="text-muted mb-2">{{ experience['perusahaan'] }}</p>
+                <p>{{ experience['deskripsi'] }}</p>
+            </article>
+            {% else %}
+            <div class="alert alert-secondary">Belum ada pengalaman yang ditambahkan.</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="projects" class="container py-5">
+        <div class="section-title">
+            <h2>Proyek Saya</h2>
+            <span></span>
+        </div>
+        <div class="projects-grid">
+            {% for project in projects %}
+            <article class="project-card">
+                <div class="project-image"><span><i class="bi bi-box-seam"></i></span></div>
+                <div class="project-body">
+                    <h5>{{ project['nama_proyek'] }}</h5>
+                    <p class="text-muted">{{ project['deskripsi'] }}</p>
+                    <div class="project-tags">
+                        <span class="tag">Flask</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    {% if project['link_proyek'] %}
+                    <div class="mt-3">
+                        <a href="{{ project['link_proyek'] }}" class="btn btn-outline-primary btn-sm" target="_blank">Lihat Proyek</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </article>
+            {% else %}
+            <div class="alert alert-secondary">Belum ada proyek yang ditambahkan.</div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section id="contact" class="container py-5">
+        <div class="section-title">
+            <h2>Hubungi Saya</h2>
+            <span></span>
+        </div>
+        <div class="contact-card">
+            <p class="text-center text-muted mb-4">Tertarik untuk berkolaborasi atau punya pertanyaan? Jangan ragu untuk mengirim pesan.</p>
+            
+            <form action="/api/kirim-pesan" method="POST">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <input class="form-control" type="text" id="nama" name="nama" placeholder="Nama Anda" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input class="form-control" type="email" id="email" name="email" placeholder="Email Anda" required>
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" id="pesan" name="pesan" rows="5" placeholder="Pesan Anda" required></textarea>
+                    </div>
+                    <div class="col-12 text-center">
+                        <button class="btn btn-primary btn-lg px-5" type="submit">Kirim Pesan</button>
+                    </div>
+                </div>
+            </form>
+            
+            <p id="statusPesan" class="text-center fw-semibold mt-3"></p>
+        </div>
+    </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/Frontend/utama/js/script.js?v=1"></script>
+</body>
+</html>

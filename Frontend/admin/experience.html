@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Pengalaman</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/base.css') }}">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Pengalaman</h2>
+        <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.admin_dashboard') }}">Kembali</a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <p class="text-muted mb-3">Isi pengalaman Anda dengan format singkat, misalnya posisi, tempat kerja, dan tahun.</p>
+            {% if editing_experience %}
+            <form method="post" action="{{ url_for('experience.edit_experience', id=editing_experience['id']) }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="perusahaan" value="{{ editing_experience['perusahaan'] }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" type="text" name="posisi" value="{{ editing_experience['posisi'] }}" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" type="text" name="tahun" value="{{ editing_experience['tahun'] }}">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" type="submit">Simpan</button>
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" name="deskripsi" rows="3">{{ editing_experience['deskripsi'] }}</textarea>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <form method="post" action="{{ url_for('experience.admin_experience') }}">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="perusahaan" placeholder="Contoh: PT Maju Bersama" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" type="text" name="posisi" placeholder="Contoh: Web Developer" required>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" type="text" name="tahun" placeholder="Contoh: 2024 - Sekarang">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100" type="submit">Tambah</button>
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" name="deskripsi" rows="3" placeholder="Jelaskan tugas atau pencapaian Anda di posisi ini."></textarea>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row g-3">
+        {% for experience in experiences %}
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>{{ experience['perusahaan'] }}</h5>
+                        <p class="text-muted mb-1">{{ experience['posisi'] }} · {{ experience['tahun'] }}</p>
+                        <p class="mb-0">{{ experience['deskripsi'] }}</p>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-primary btn-sm me-2" href="{{ url_for('experience.edit_experience', id=experience['id']) }}" title="Edit">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{ url_for('experience.delete_experience', id=experience['id']) }}" title="Hapus">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-secondary">Belum ada pengalaman.</div></div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

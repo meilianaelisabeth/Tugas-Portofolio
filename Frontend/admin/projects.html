@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelola Proyek</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/base.css') }}">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Proyek</h2>
+        <a class="btn btn-outline-secondary" href="{{ url_for('dashboard.admin_dashboard') }}">Kembali</a>
+    </div>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <p class="text-muted mb-3">Tambahkan proyek Anda yang paling menarik, lengkap dengan penjelasan singkat dan link jika ada.</p>
+            {% if editing_project %}
+            <form method="post" action="{{ url_for('projects.edit_project', id=editing_project['id']) }}" enctype="multipart/form-data">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="nama_proyek" value="{{ editing_project['nama_proyek'] }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="link_proyek" value="{{ editing_project['link_proyek'] }}">
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="file" name="gambar_proyek">
+                    </div>
+                    <input type="hidden" name="old_gambar_url" value="{{ editing_project['gambar_url'] }}">
+                    <div class="col-12">
+                        <textarea class="form-control" name="deskripsi" rows="3">{{ editing_project['deskripsi'] }}</textarea>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Simpan</button>
+                        <a class="btn btn-outline-secondary" href="{{ url_for('projects.admin_projects') }}">Batal</a>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <form method="post" action="{{ url_for('projects.admin_projects') }}" enctype="multipart/form-data">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="nama_proyek" placeholder="Contoh: Sistem Informasi Kasir" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="text" name="link_proyek" placeholder="Link proyek / GitHub / Demo">
+                    </div>
+                    <div class="col-md-4">
+                        <input class="form-control" type="file" name="gambar_proyek">
+                    </div>
+                    <div class="col-12">
+                        <textarea class="form-control" name="deskripsi" rows="3" placeholder="Jelaskan tujuan, teknologi, dan hasil dari proyek ini."></textarea>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-primary" type="submit">Tambah Proyek</button>
+                    </div>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row g-3">
+        {% for project in projects %}
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-body d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5>{{ project['nama_proyek'] }}</h5>
+                        <p class="text-muted mb-0">{{ project['deskripsi'] }}</p>
+                    </div>
+                    <div>
+                        <a class="btn btn-outline-primary btn-sm me-2" href="{{ url_for('projects.edit_project', id=project['id']) }}" title="Edit">
+                            <i class="bi bi-pencil-square"></i>
+                        </a>
+                        <a class="btn btn-outline-danger btn-sm" href="{{ url_for('projects.delete_project', id=project['id']) }}" title="Hapus">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><div class="alert alert-secondary">Belum ada proyek.</div></div>
+        {% endfor %}
+    </div>
+</div>
+</body>
+</html>

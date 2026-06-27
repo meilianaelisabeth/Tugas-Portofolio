@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin/css/base.css') }}">
+</head>
+<body class="bg-light">
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2>Dashboard Admin</h2>
+            <p class="text-muted">Kelola konten portofolio Anda dari sini.</p>
+        </div>
+        <a class="btn btn-outline-danger" href="{{ url_for('login.admin_logout') }}">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Skills</h5>
+                    <p class="display-6 mb-0">{{ stats.skills }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Proyek</h5>
+                    <p class="display-6 mb-0">{{ stats.projects }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5>Pesan</h5>
+                    <p class="display-6 mb-0">{{ stats.messages }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mt-2">
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{{ url_for('profiles.admin_profile') }}">Profil</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{{ url_for('skills.admin_skills') }}">Skills</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{{ url_for('experience.admin_experience') }}">Pengalaman</a></div>
+        <div class="col-md-3"><a class="btn btn-outline-primary w-100" href="{{ url_for('projects.admin_projects') }}">Proyek</a></div>
+    </div>
+
+    <div class="alert alert-info mt-4">
+        <strong>Langkah berikutnya:</strong> isi profil, skill, pengalaman, dan proyek satu per satu dari menu di atas. Setelah itu halaman portofolio akan otomatis tampil lebih lengkap.
+    </div>
+</div>
+</body>
+</html>

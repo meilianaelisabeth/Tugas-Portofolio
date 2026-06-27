@@ -1,0 +1,62 @@
+:root {
+  --admin-bg: #fff1f5;
+  --admin-surface: #ffffff;
+  --admin-soft: #fde6ef;
+  --admin-border: #f7d5e1;
+  --admin-text: #2b2430;
+  --admin-muted: #6f6a76;
+  --admin-primary: #e6799f;
+  --admin-primary-dark: #d15c84;
+  --admin-primary-soft: rgba(230, 121, 159, 0.18);
+}
+
+body {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}
+
+.navbar, .card {
+  background: var(--admin-surface);
+  border-color: var(--admin-border) !important;
+}
+
+h2, h5 {
+  color: var(--admin-text);
+}
+
+.btn-primary {
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+  border-radius: 999px;
+  padding: 0.7rem 1.4rem;
+}
+
+.btn-primary:hover,
+.btn-outline-primary:hover {
+  background: var(--admin-primary-dark);
+  border-color: var(--admin-primary-dark);
+  color: #ffffff !important;
+}
+
+.btn-outline-primary {
+  color: var(--admin-primary);
+  border-color: rgba(230, 121, 159, 0.45);
+  border-radius: 999px;
+}
+
+.btn-outline-secondary {
+  border-color: #d9c7d3;
+}
+
+.alert {
+  border-radius: 18px;
+}
+
+.card {
+  border-radius: 22px;
+  box-shadow: 0 20px 50px rgba(43, 36, 48, 0.08);
+}
+
+a.btn {
+  font-size: 0.95rem;
+}
