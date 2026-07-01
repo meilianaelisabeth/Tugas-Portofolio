@@ -1,7 +1,12 @@
 from flask import Blueprint, request, jsonify, session
 import cloudinary
 import cloudinary.uploader
-import resend  
+
+try:
+    import resend
+except ImportError:  # pragma: no cover - optional dependency
+    resend = None
+
 from config import Config
 
 

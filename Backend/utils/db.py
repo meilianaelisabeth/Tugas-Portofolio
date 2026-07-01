@@ -37,9 +37,14 @@ class SQLiteCursor:
     def close(self):
         self._cursor.close()
 
+    @property
+    def lastrowid(self):
+        return self._cursor.lastrowid
+
 
 class SQLiteConnection:
     def __init__(self, db_path):
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
         self._connection = sqlite3.connect(db_path)
         self._connection.row_factory = sqlite3.Row
 
@@ -177,6 +182,17 @@ def _initialize_mysql(connection):
         connection.commit()
 
 
+def get_default_db_path():
+    sqlite_path = os.environ.get('SQLITE_DB_PATH', '').strip()
+    if sqlite_path:
+        return sqlite_path
+
+    if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+        return os.path.join('/tmp', 'portfolio.db')
+
+    return os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'portfolio.db')
+
+
 def get_db_connection():
     if Config.DB_HOST and Config.DB_USER and Config.DB_PASSWORD and pymysql is not None:
         try:
@@ -198,7 +214,7 @@ def get_db_connection():
         except Exception as exc:  # pragma: no cover - fallback path
             print(f'Gagal tersambung ke TiDB Cloud: {exc}')
 
-    db_path = os.environ.get('SQLITE_DB_PATH', os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'portfolio.db'))
+    db_path = get_default_db_path()
     connection = SQLiteConnection(db_path)
     _initialize_sqlite(connection)
     return connection

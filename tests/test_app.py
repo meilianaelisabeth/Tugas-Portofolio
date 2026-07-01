@@ -1,6 +1,7 @@
+import os
 import unittest
 from app import app
-from Backend.utils.db import get_db_connection
+from Backend.utils.db import get_db_connection, get_default_db_path
 
 
 class PortfolioAppTests(unittest.TestCase):
@@ -24,6 +25,19 @@ class PortfolioAppTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'dashboard', response.data.lower())
+
+    def test_default_db_path_uses_tmp_for_serverless(self):
+        previous_vercel = os.environ.get('VERCEL')
+        os.environ['VERCEL'] = '1'
+        try:
+            db_path = get_default_db_path()
+            self.assertTrue(db_path.endswith('portfolio.db'))
+            self.assertTrue(db_path.startswith('/tmp'))
+        finally:
+            if previous_vercel is None:
+                os.environ.pop('VERCEL', None)
+            else:
+                os.environ['VERCEL'] = previous_vercel
 
     def test_can_edit_existing_skill(self):
         with self.client.session_transaction() as session:

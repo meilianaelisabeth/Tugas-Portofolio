@@ -140,7 +140,13 @@
         <div class="projects-grid">
             {% for project in projects %}
             <article class="project-card">
-                <div class="project-image"><span><i class="bi bi-box-seam"></i></span></div>
+                <div class="project-image">
+                    {% if project['gambar_url'] %}
+                    <img src="{{ project['gambar_url'] }}" alt="{{ project['nama_proyek'] }}">
+                    {% else %}
+                    <span><i class="bi bi-box-seam"></i></span>
+                    {% endif %}
+                </div>
                 <div class="project-body">
                     <h5>{{ project['nama_proyek'] }}</h5>
                     <p class="text-muted">{{ project['deskripsi'] }}</p>
